@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <bean id="teacher" class="bean.SweetTeacher">
+    	
+    </bean>
+    
+     <bean id="student" class="bean.SweetStudent">
+     	<property name="teacher" ref ="teacher"></property>
+     	<property name="age"  value="10"></property>
+     	<property name="name"  value="mt"></property>
+     </bean>
+     
+     <bean id="teacher1" class="bean.SweetTeacher" ></bean>
+     <bean id="student1" class="bean.SweetStudent">
+     	<constructor-arg name="t" ref="teacher1"></constructor-arg>
+     </bean>
+     
+     <bean id="teacher2" class="bean.SweetTeacher" ></bean>
+     <bean id="student2" class="bean.SweetStudent">
+     	<constructor-arg name="t" ref="teacher2"></constructor-arg>
+     </bean>
+     
+     <bean id="mycl1" class="bean.MyClass" >
+     	<property name="p1" ref = "student"></property>
+     	<property name="p2" ref = "teacher"></property>
+     </bean>
+     
+     <bean id="mycl2" class="bean.MyClass" >
+     	<property name="p1" ref = "teacher"></property>
+     	<property name="p2" ref = "student"></property>
+     </bean>
+     
+     <bean id="log" class="bean.AopLog"></bean>
+     <bean id="aopAction" class="bean.AopAction"></bean>
+     
+	  <aop:config>
+	        <aop:pointcut id="action" expression="execution(* bean.AopAction.*(..)) "/>   
+	        <aop:aspect id="logAspect" ref="log">
+	        	<aop:before pointcut-ref="action" method="before"/>
+	            <aop:after pointcut-ref="action" method="after"/>
+	        </aop:aspect>
+	  </aop:config> 
+</beans>
